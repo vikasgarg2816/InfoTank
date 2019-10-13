@@ -2,13 +2,15 @@
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
-  background: #2196f3;
+  background: #991d99;
   color: white;
   box-shadow: 1px 1px 1px 1px lightgrey; }
   #layout-header nav .mini-logo p {
     margin: 5px;
-    font-size: 1.4rem;
-    font-weight: bold; }
+    margin-left: 50px;
+    font-size: 2.2rem;
+    font-weight: bold;
+    font-family: monospace; }
   #layout-header nav .auth-links ul {
     margin: 5% 5px;
     display: flex;
@@ -17,8 +19,11 @@
       margin-right: 10px; }
   #layout-header nav a {
     color: white;
-    text-decoration: none; }
+    text-decoration: none;
+    font-family: monospace;
+    font-size: 2rem; }
 
 #icon {
   width: 50px;
-  height: 50px; }
+  height: 50px;
+  border-radius: 20px; }
