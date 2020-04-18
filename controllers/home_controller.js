@@ -1,8 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
 
-
-
 module.exports.home = async function(req, res){
 
     try{
@@ -19,7 +17,7 @@ module.exports.home = async function(req, res){
     
         let users = await User.find({});
         return res.render('home', {
-            title: "InfoTank | Home",
+            title: "Q & A | Home",
             posts:  posts,
             all_users: users
         });
@@ -28,7 +26,6 @@ module.exports.home = async function(req, res){
         console.log('Error', err);
         return;
     }
-   
 }
 
 // module.exports.actionName = function(req, res){}
