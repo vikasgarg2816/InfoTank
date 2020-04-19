@@ -1,15 +1,59 @@
 <link rel="stylesheet" href="/css/home.css">
-
+<link rel="stylesheet" href="/css/chat_box.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 <div id="home-container">
+    <% if(!locals.user) {%>
+        <pre style="margin-left: 2px; margin-top: 250px; background: white; border-style: none; font-style: italic; font-size : 50px;">
+                    Create Your Id
+                    Begin the fun
+        </pre>    
+    <%}%>
+    <section id = "choose-interest">
+        <% if(locals.user) { %>
+        <h2>Let Me Know what's your mood</h2>
+        <ul type = "none">
+            <li>
+                <a>Sports</a>
+            </li>
+            <li>
+                <a>Technology</a>
+            </li>
+            <li>
+                <a>Music</a>
+            </li>
+            <li>
+                <a>Bollywood</a>
+            </li>
+            <li>
+                <a>News</a>
+            </li>
+            <li>
+                <a>Medical</a>
+            </li>
+            <li>
+                <a>Science</a>
+            </li>
+            <li>
+                <a>Space</a>
+            </li>
+            <li>
+                <a>Food</a>
+            </li>
+            <li>
+                <a>Business</a>
+            </li>
+        </ul>
+    </section>
+    <% } %>
     <section id="feed-posts">
-            <h4>Posts</h4>
             <% if(locals.user){ %>
+            <h4>Posts</h4>
             <form action="/posts/create" id="new-post-form" method="POST">
-                <textarea name="content" cols="30" rows="3" placeholder="Type Here..." required></textarea>
-                <input type="submit" value="Post">
+                <span>
+                <textarea name="content" cols="30" rows="4" placeholder="Type Here..." required></textarea>
+                    <input type="submit" value="Post">
+                </span>
             </form>
-            <% } %>
-        
             <div id="posts-list-container">
                 <ul>
                     <% for(post of posts){ %>
@@ -20,16 +64,72 @@
                 </ul>
             </div>
         </section>
-        
-        
-        <section id="user-friends">
-            <h4>Friends</h4>
-            <% for(u of all_users){%>
-                <p>
-                    <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
-                </p>
-            <% } %>
-        </section>
-</div>
-<script src="/js/home_posts.js"></script>
+        <% } %>
+        <% if(locals.user){%>
+            <section id="user-friends">
+                <h4>People you may follow</h4>
+                <% for(u of all_users){%>
+                    <% if(u.id != locals.user.id){%>
+                        <%if(locals.user.friends.length != 0) { %>
+                            <% var f = 1 %>
+                            <%for (each of locals.user.friends){%>
+                                <% if(each._id == u.id) {%>
+                                    <% f = 0 %>
+                                <%}%>
+                            <% } %>
+                            <% if(f == 1) {%>
+                                <p>
+                                    <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
+                                </p>
+                            <%}%>
+                        <% } else { %>
+                            <p>
+                                <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
+                            </p>
+                        <% } %>
+                    <%}%>
+                <% } %>
+                <h4>You Following</h4>
+                <% for(u of all_users){%>
+                    <% if(u.id != locals.user.id){%>
+                        <%if(locals.user.friends.length != 0) { %>
+                            <% var f = 1 %>
+                            <%for (each of locals.user.friends){%>
+                                <% if(each._id == u.id) {%>
+                                    <% f = 0 %>
+                                <%}%>
+                            <% } %>
+                            <% if(f == 0) {%>
+                                    <%= u.name %>
+                                </p>
+                            <%}%>
+                        <% } %>
+                    <%}%>
+                <% } %>
+                
+            </section>
+        <%}%>
 
+    <%- include('_chat_box') -%>
+</div>
+
+<!-- importing this script for creating the comments -->
+<script src="/js/home_post_comments.js" ></script>
+<script src="/js/home_posts.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+<!-- CHANGE :: import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
+<script src="js/toggle_likes.js"></script>
+<script>
+    $('.toggle-like-button').each(function(){
+        let self = this;
+        let toggleLike = new ToggleLike(self);
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="/js/chat_engine.js"></script>
+<% if (locals.user){ %>
+<script>
+    new ChatEngine('user-chat-box', '<%= locals.user.email %>')
+    
+</script>
+<% } %>

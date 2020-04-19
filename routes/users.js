@@ -10,7 +10,6 @@ router.post('/update/:id', passport.checkAuthentication, usersController.update)
 router.get('/sign-up', usersController.signUp);
 router.get('/sign-in', usersController.signIn);
 
-
 router.post('/create', usersController.create);
 
 // use passport as a middleware to authenticate
@@ -22,7 +21,12 @@ router.post('/create-session', passport.authenticate(
 
 router.get('/sign-out', usersController.destroySession);
 
-router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
-router.get('/auth/google/callback',passport.authenticate('google',{failureRedirect:'/users/sign-in'}),usersController.createSession);
 
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession);
+router.get('/reset-password',usersController.renderreset);
+router.post('/verify', usersController.verifydetails);
+router.post('/verifyotp',usersController.verifyotp);
+router.post('/changepassword',usersController.changepassword);
+router.post('/add-friend/:id',passport.checkAuthentication,usersController.addfriend);
 module.exports = router;

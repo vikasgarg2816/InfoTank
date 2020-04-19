@@ -2,8 +2,10 @@
     display: flex;
     
     #feed-posts{
+        margin-left:15%;
         width: 70%;
         padding: 10px;
+        
     }
 
     #user-friends{
@@ -11,5 +13,12 @@
         padding: 10px;
         border-left: 1px solid lightgrey;
         height: 100%;
+    }
+    #choose-interest{
+        margin-left:8%;
+        margin-top:5%;
+    }
+    #choose-interest ul li{
+        margin-top:20px;
     }
 }
